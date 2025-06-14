@@ -9,15 +9,14 @@ pipeline {
     }
 
     stages {
-
         stage('Build') {
             steps {
                 echo "****** Building the app ******"
                 script {
-                        sh """
-                        cd movies
-                        docker build --tag ${env.APP_NAME}:${env.VERSION} .
-                        """
+                    sh """
+                    cd movies
+                    docker build --tag ${env.APP_NAME}:${env.VERSION} .
+                    """
                 }    
             }
         }
@@ -32,19 +31,9 @@ pipeline {
                     docker tag ${env.APP_NAME}:${env.VERSION} yourdockerhubusername/${env.APP_NAME}:${env.VERSION}
                     docker push yourdockerhubusername/${env.APP_NAME}:${env.VERSION}
                     """
-                        }
+                    }
                 }    
             }
-        }
-    }
-
-    post {
-        always {
-            echo "Cleaning up..."
-            sh """
-            docker rm -f ${env.APP_NAME}_container || true
-            docker images | grep ${env.APP_NAME} | awk '{print \$3}' | xargs -r docker rmi -f || true
-            """
         }
     }
 }
