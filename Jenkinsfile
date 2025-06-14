@@ -14,6 +14,7 @@ pipeline {
                 echo "****** Building the app ******"
                 script {
                     sh """
+                    whoami
                     cd movies
                     docker build --tag ${env.APP_NAME}:${env.VERSION} .
                     """
