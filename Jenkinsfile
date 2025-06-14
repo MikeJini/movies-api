@@ -5,7 +5,7 @@ pipeline {
         APP_NAME = "mike-movies-api"
         VERSION = "${BUILD_NUMBER}"
         IMAGE_NAME = "${APP_NAME}:${VERSION}"
-        DOCKERHUB_CRED = "-cred"
+        DOCKERHUB_CRED = "docker-credentials"
     }
 
     stages {
@@ -29,8 +29,8 @@ pipeline {
                 script {
                     docker.withRegistry('', "${env.DOCKERHUB_CRED}") {
                     sh """
-                    docker tag ${env.APP_NAME}:${env.VERSION} yourdockerhubusername/${env.APP_NAME}:${env.VERSION}
-                    docker push yourdockerhubusername/${env.APP_NAME}:${env.VERSION}
+                    docker tag ${env.APP_NAME}:${env.VERSION} MikeJini/${env.APP_NAME}:${env.VERSION}
+                    docker push MikeJini/${env.APP_NAME}:${env.VERSION}
                     """
                     }
                 }    
