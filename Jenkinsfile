@@ -13,14 +13,12 @@ pipeline {
         stage('Build') {
             steps {
                 echo "****** Building the app ******"
-                node {
-                    script {
+                script {
                         sh """
                         cd movies
                         docker build --tag ${env.APP_NAME}:${env.VERSION} .
                         """
-                    }
-                }
+                }    
             }
         }
 
@@ -28,16 +26,14 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo "******* Deploying a new version *******"
-                node {
-                    script {
-                        docker.withRegistry('', "${env.DOCKERHUB_CRED}") {
-                            sh """
-                            docker tag ${env.APP_NAME}:${env.VERSION} yourdockerhubusername/${env.APP_NAME}:${env.VERSION}
-                            docker push yourdockerhubusername/${env.APP_NAME}:${env.VERSION}
-                            """
+                script {
+                    docker.withRegistry('', "${env.DOCKERHUB_CRED}") {
+                    sh """
+                    docker tag ${env.APP_NAME}:${env.VERSION} yourdockerhubusername/${env.APP_NAME}:${env.VERSION}
+                    docker push yourdockerhubusername/${env.APP_NAME}:${env.VERSION}
+                    """
                         }
-                    }    
-                }
+                }    
             }
         }
     }
