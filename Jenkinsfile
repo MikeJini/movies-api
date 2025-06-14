@@ -27,7 +27,7 @@ pipeline {
             steps {
                 echo "******* Deploying a new version *******"
                 script {
-                    docker.withRegistry('', "${env.DOCKERHUB_CRED}") {
+                    docker.withRegistry('registry.hub.docker.com', "${env.DOCKERHUB_CRED}") {
                     sh """
                     docker tag ${env.APP_NAME}:${env.VERSION} MikeJini/${env.APP_NAME}:${env.VERSION}
                     docker push MikeJini/${env.APP_NAME}:${env.VERSION}
