@@ -36,7 +36,8 @@ pipeline {
                             docker push yourdockerhubusername/${env.APP_NAME}:${env.VERSION}
                             """
                         }
-                    }
+                    }    
+                }
             }
         }
     }
