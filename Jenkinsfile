@@ -29,8 +29,8 @@ pipeline {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', "${env.DOCKERHUB_CRED}") {
                     sh """
-                    docker tag ${env.APP_NAME}:${env.VERSION} MikeJini/${env.APP_NAME}:${env.VERSION}
-                    docker push MikeJini/${env.APP_NAME}:${env.VERSION}
+                    docker tag ${env.APP_NAME}:${env.VERSION} mikejini/${env.APP_NAME}:${env.VERSION}
+                    docker push mikejini/${env.APP_NAME}:${env.VERSION}
                     """
                     }
                 }    
