@@ -16,7 +16,7 @@ pipeline {
                 script {
                     sh """
                     cd movies
-                    docker build --tag ${APP_NAME}:${VERSION} .
+                    docker build --tag ${env.APP_NAME}:${env.VERSION} .
                     """
                 }
             }
@@ -27,10 +27,10 @@ pipeline {
             steps {
                 echo "******* Deploying a new version *******"
                 script {
-                    docker.withRegistry('', "${DOCKERHUB_CRED}") {
+                    docker.withRegistry('', "${env.DOCKERHUB_CRED}") {
                         sh """
-                        docker tag ${APP_NAME}:${VERSION} yourdockerhubusername/${APP_NAME}:${VERSION}
-                        docker push yourdockerhubusername/${APP_NAME}:${VERSION}
+                        docker tag ${env.APP_NAME}:${env.VERSION} yourdockerhubusername/${env.APP_NAME}:${env.VERSION}
+                        docker push yourdockerhubusername/${env.APP_NAME}:${env.VERSION}
                         """
                     }
                 }
@@ -42,8 +42,8 @@ pipeline {
         always {
             echo "Cleaning up..."
             sh """
-            docker rm -f ${APP_NAME}_container || true
-            docker images | grep ${APP_NAME} | awk '{print \$3}' | xargs -r docker rmi -f || true
+            docker rm -f ${env.APP_NAME}_container || true
+            docker images | grep ${env.APP_NAME} | awk '{print \$3}' | xargs -r docker rmi -f || true
             """
         }
     }
