@@ -2,6 +2,7 @@ pipeline {
     agent any
 
     environment {
+        CONTAINER_TEST_NAME = "movies_test"
         APP_NAME = "mike-movies-api"
         VERSION = "${BUILD_NUMBER}"
         IMAGE_NAME = "${APP_NAME}:${VERSION}"
@@ -22,6 +23,19 @@ pipeline {
             }
         }
 
+        stage('Test') {
+            steps {
+                echo "****** Testing the app ******"
+                script {
+                    sh """
+                    docker run -d -p 5000:80 --name ${CONTAINER_TEST_NAME} ${env.APP_NAME}:${env.VERSION}
+                    python ./movies/test/test.py
+                    docker stop ${CONTAINER_TEST_NAME}
+                    docker rm ${CONTAINER_TEST_NAME}
+                    """
+                }    
+            }
+        }
 
         stage('Deploy') {
             steps {
@@ -38,3 +52,4 @@ pipeline {
         }
     }
 }
+
