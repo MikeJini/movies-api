@@ -28,14 +28,12 @@ pipeline {
                 echo "****** Testing the app ******"
                 script {
                     sh """
-                    docker stop ${CONTAINER_TEST_NAME}
-                    docker rm ${CONTAINER_TEST_NAME}
+                    docker stop ${CONTAINER_TEST_NAME} || true
 
-                    docker run -d -p 5000:80 --name ${CONTAINER_TEST_NAME} ${env.APP_NAME}:${env.VERSION}
+                    docker run -d -p 5000:80 --rm --name ${CONTAINER_TEST_NAME} ${env.APP_NAME}:${env.VERSION}
                     python ./movies/test/test.py
-                    
+
                     docker stop ${CONTAINER_TEST_NAME}
-                    docker rm ${CONTAINER_TEST_NAME}
                     """
                 }    
             }
