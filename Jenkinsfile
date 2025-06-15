@@ -53,5 +53,14 @@ pipeline {
             }
         }
     }
+    post {
+        always {
+            echo "Cleaning up.."
+            sh """
+            docker stop ${CONTAINER_TEST_NAME} || true
+            docker rmi ${env.APP_NAME}:${env.VERSION}
+            """
+        }
+    }
 }
 
